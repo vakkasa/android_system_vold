@@ -137,7 +137,7 @@ int Fat::doMount(const char *fsPath, const char *mountPoint,
         permMask = 0;
     }
 
-    sprintf(mountData,
+    snprintf(mountData, 255,
             "utf8,uid=%d,gid=%d,fmask=%o,dmask=%o,shortname=mixed",
             ownerUid, ownerGid, permMask, permMask);
 

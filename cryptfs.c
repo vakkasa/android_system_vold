@@ -787,7 +787,7 @@ static int load_crypto_mapping_table(struct crypt_mnt_ftr *crypt_ftr, unsigned c
 
   crypt_params = buffer + sizeof(struct dm_ioctl) + sizeof(struct dm_target_spec);
   convert_key_to_hex_ascii(master_key, crypt_ftr->keysize, master_key_ascii);
-  sprintf(crypt_params, "%s %s 0 %s 0 %s", crypt_ftr->crypto_type_name,
+  snprintf(crypt_params, strlen(crypt_params) + 1, "%s %s 0 %s 0 %s", crypt_ftr->crypto_type_name,
           master_key_ascii, real_blk_name, extra_params);
   crypt_params += strlen(crypt_params) + 1;
   crypt_params = (char *) (((unsigned long)crypt_params + 7) & ~8); /* Align to an 8 byte boundary */
@@ -1314,7 +1314,7 @@ static int test_mount_encrypted_fs(char *passwd, char *mount_point, char *label)
    * Since we're here, the mount_point should be a tmpfs filesystem, so make
    * a directory in it to test mount the decrypted filesystem.
    */
-  sprintf(tmp_mount_point, "%s/tmp_mnt", mount_point);
+  snprintf(tmp_mount_point, 64, "%s/tmp_mnt", mount_point);
   mkdir(tmp_mount_point, 0755);
   if (fs_mgr_do_mount(fstab, DATA_MNT_POINT, crypto_blkdev, tmp_mount_point)) {
     SLOGE("Error temp mounting decrypted block device\n");
@@ -1390,7 +1390,7 @@ int cryptfs_setup_volume(const char *label, int major, int minor,
     struct stat statbuf;
     int nr_sec, fd;
 
-    sprintf(real_blkdev, "/dev/block/vold/%d:%d", major, minor);
+    snprintf(real_blkdev, MAXPATHLEN, "/dev/block/vold/%d:%d", major, minor);
 
     get_crypt_ftr_and_key(&sd_crypt_ftr);
 

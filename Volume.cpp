@@ -286,7 +286,7 @@ int Volume::formatVol(bool wipe, const char* fstype) {
     int ret = -1;
     // Only initialize the MBR if we are formatting the entire device
     if (formatEntireDevice) {
-        sprintf(devicePath, "/dev/block/vold/%d:%d",
+        snprintf(devicePath, 255, "/dev/block/vold/%d:%d",
                 MAJOR(diskNode), MINOR(diskNode));
 
         if (initializeMbr(devicePath)) {
@@ -295,7 +295,7 @@ int Volume::formatVol(bool wipe, const char* fstype) {
         }
     }
 
-    sprintf(devicePath, "/dev/block/vold/%d:%d",
+    snprintf(devicePath, 255, "/dev/block/vold/%d:%d",
             MAJOR(partNode), MINOR(partNode));
 
 #ifdef VOLD_EMMC_SHARES_DEV_MAJOR
@@ -476,7 +476,7 @@ int Volume::mountVol() {
         char devicePath[255];
         char *fstype = NULL;
 
-        sprintf(devicePath, "/dev/block/vold/%d:%d", MAJOR(deviceNodes[i]),
+        snprintf(devicePath, 255, "/dev/block/vold/%d:%d", MAJOR(deviceNodes[i]),
                 MINOR(deviceNodes[i]));
 
         SLOGI("%s being considered for volume %s\n", devicePath, getLabel());

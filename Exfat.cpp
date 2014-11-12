@@ -60,7 +60,7 @@ int Exfat::doMount(const char *fsPath, const char *mountPoint,
         return rc;
     }
 
-    sprintf(mountData,
+    snprintf(mountData, 255,
             "noatime,nodev,nosuid,dirsync,uid=%d,gid=%d,fmask=%o,dmask=%o,%s,%s",
             ownerUid, ownerGid, permMask, permMask,
             (executable ? "exec" : "noexec"),
